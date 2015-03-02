@@ -1,9 +1,11 @@
 @charset "UTF-8";
-.is-template{
-  border: 1px solid red;
+
+body.temple-activated, .temple-activated .is-template {
+  border: 1px solid red !important;
   position: relative !important;
 }
-.is-template:hover:after{
+
+body.temple-activated:hover:after, .temple-activated .is-template:hover:after {
   display: inline-block;
   content: attr(data-template);
   background:red;
@@ -14,4 +16,20 @@
   right: 0px;
   z-index: 10000;
   padding: 2px 8px;
+  font-size: small;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+
+.Temple_activate {
+  padding: 0 9px;
+  margin-right: -9px;
+  opacity: 0;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.Temple_activate:hover {
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;	
 }

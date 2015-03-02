@@ -1,34 +1,63 @@
+var Temple = {};
+
+Temple.instanceCount = new ReactiveDict();
+
 Template.onRendered(function () {
-  var node = this.firstNode;
-  if (node && node.nodeType !== 3) { // get rid of text nodes
-    $node = $(node);
-    var template = this.view.name;
-    $node.addClass('is-template').attr('data-template', template);
-
-    // avoid giving position:relative to absolute elements
-    if ($node.css('position') == 'static') {
-      $node.css('position', 'relative');
-    }
+	
+  // We're going to get the element that surrounds that template
+  var node = $(this.firstNode).parent();
+  
+  if (node.closest('#Mongol').length) {
+	return;  
   }
+  
+  if (node && node.nodeType !== 3) { // get rid of text nodes
+    
+	var template = this.view.name;
+	var currentCount = Temple.instanceCount.get('Temple_render_count_' + template) || 1;
+    $node = node;
 
-  var instance = this;
-  this.autorun(function () {
-    var data = Template.currentData();
-    var template = instance.view.name;
-    if (template !== "Template.__dynamicWithDataContext" && template !== "Template.__dynamic") {
-      var node = instance.firstNode;
-      var redrawCount = parseInt($(node).attr('data-redraw') || 0);
-      // console.log('-------------------------')
-      // console.log('redrawing ' + template + '('+redrawCount+')')
-      // console.log(instance)
-      // console.log(node)
-      var bgAlpha = redrawCount/20;
-      var shadowAlpha = redrawCount/10;
-      $(node)
-        .attr('data-redraw', redrawCount+1)
-        .attr('data-data', JSON.stringify(data, null, 4))
-        .css('background', 'rgba(255,0,0,'+bgAlpha+')')
-        .css('box-shadow', '0px 0px 5px rgba(255,0,0,'+ shadowAlpha +')');
-    }
-  })
+	var fix = ($node.css('position') === 'fixed') ? true : false;
+	
+    $node.addClass('is-template').attr('data-template', template + ' (' + currentCount + ')');
+	
+    // avoid giving position:relative to fixed elements
+	if (fix) {
+	  $node.css('position', 'fixed');	
+	}
+	
+	Temple.instanceCount.set('Temple_render_count_' + template, currentCount + 1);
+	
+  }
+  
 });
+
+Meteor.startup(function () {
+
+  $(document).keydown(function (e) {
+    if (e.keyCode == 84 && e.ctrlKey) {
+      Session.set('Temple_activated', !Session.get('Temple_activated'));
+    }
+  });
+  
+  Tracker.autorun(function () {
+
+    if (Session.get('Temple_activated')) {
+	  $('body').addClass('temple-activated');
+	}
+	else {
+	  $('body').removeClass('temple-activated');	
+	}
+	
+  });
+
+});
+
+if (!!Package["msavin:mongol"]) {
+	
+  // Replace default Mongol header
+  Template.Mongol_temple_header.replaces("Mongol_header");
+  Template.Mongol_temple_header.inheritsHelpersFrom("Mongol_header");
+  Template.Mongol_temple_header.inheritsEventsFrom("Mongol_header");
+
+}
