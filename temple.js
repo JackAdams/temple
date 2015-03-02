@@ -6,34 +6,31 @@ Template.onRendered(function () {
   
   var self = this;
   
-    Meteor.defer(function () {    
-    // We're going to get the element that surrounds that template
-    var node = $(self.firstNode).parent();
+  // We're going to get the element that surrounds that template
+  var node = $(self.firstNode).parent();
+  
+  if (node.closest('#Mongol').length) {
+    return;  
+  }
+  
+  if (node && node.nodeType !== 3) { // get rid of text nodes
     
-    if (node.closest('#Mongol').length) {
-      return;  
+    var template = self.view.name;
+    var currentCount = Temple.instanceCount.get('Temple_render_count_' + template) || 1;
+    $node = node;
+
+    var fix = ($node.css('position') === 'fixed') ? true : false;
+    
+    $node.addClass('is-template').attr('data-template', (($node.attr('data-template')) ? $node.attr('data-template') + ' ' : '') + template + ' (' + currentCount + ')');
+    
+    // avoid giving position:relative to fixed elements
+    if (fix) {
+      $node.css('position', 'fixed');    
     }
     
-    if (node && node.nodeType !== 3) { // get rid of text nodes
-      
-      var template = self.view.name;
-      var currentCount = Temple.instanceCount.get('Temple_render_count_' + template) || 1;
-      $node = node;
-  
-      var fix = ($node.css('position') === 'fixed') ? true : false;
-      
-      $node.addClass('is-template').attr('data-template', (($node.attr('data-template')) ? $node.attr('data-template') + ' ' : '') + template + ' (' + currentCount + ')');
-      
-      // avoid giving position:relative to fixed elements
-      if (fix) {
-        $node.css('position', 'fixed');    
-      }
-      
-      Temple.instanceCount.set('Temple_render_count_' + template, currentCount + 1);
-      
-    }
-  
-  });
+    Temple.instanceCount.set('Temple_render_count_' + template, currentCount + 1);
+    
+  }
   
 });
 
