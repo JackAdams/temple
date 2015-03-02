@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'temple',
+  name: 'babrahams:temple',
   version: '0.0.1',
   // Brief, one-line summary of the package.
-  summary: '',
+  summary: 'Developer tool that provides visual information about templates',
   // URL to the Git repository containing the source code for this package.
   git: '',
   // By default, Meteor will default to using README.md for documentation.
@@ -11,8 +11,12 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
+
   api.versionsFrom('1.0.3.2');
+  api.use('aldeed:template-extension');
   api.addFiles('temple.js');
+  api.addFiles('temple.css');
+
 });
 
 Package.onTest(function(api) {

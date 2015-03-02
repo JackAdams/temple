@@ -1,0 +1,17 @@
+@charset "UTF-8";
+.is-template{
+  border: 1px solid red;
+  position: relative !important;
+}
+.is-template:hover:after{
+  display: inline-block;
+  content: attr(data-template);
+  background:red;
+  color:white;
+  font-size:12px;
+  position: absolute;
+  top: 100%;
+  right: 0px;
+  z-index: 10000;
+  padding: 2px 8px;
+}
