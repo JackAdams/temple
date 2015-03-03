@@ -10,10 +10,18 @@ Quick start
 meteor add babrahams:temple
 ```
 
-Use [control] + [T] to active _Temple_.
+Use [control] + [T] to active *Temple*.
 
 Note:
 
-1. _Temple_ will plug itself into the `msavin:mongol` UI if that package is already added to your project.
-2. This is a `debug = true` package, so it won't compile into production builds.
+1. *Temple* will plug itself into the UI of `msavin:mongol` if that package is added to your project.
+2. This is a `{debug: true}` package, so it won't be compiled into production builds.
 
+Usage
+----
+
+When *Temple* is activated, templates are outlined with red borders.
+
+When hovered over, the name of the template shows, along with a number that shows which rendered instance of the template this represents (since the last hard browser refresh).
+
+Click on any element to see the data context of the element as pretty JSON.

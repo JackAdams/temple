@@ -43,7 +43,11 @@ Template.body.events({
       var target = $(evt.target)[0];
 
       if (target && !($(target).closest('#Mongol').length || $(target).closest('.ui-dialog').find('#temple-dialog').length)) {
-        $('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>').dialog({minWidth:600});
+        $('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>');
+        $('#temple-dialog').dialog({
+          title:'Data context',
+          minWidth:600
+        });
       }
     
     }
