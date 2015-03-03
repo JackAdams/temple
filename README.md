@@ -10,7 +10,7 @@ Quick start
 meteor add babrahams:temple
 ```
 
-Use [control] + [T] to active *Temple*.
+Use [control] + [T] to activate *Temple*.
 
 Note:
 
