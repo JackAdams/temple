@@ -32,7 +32,7 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
 	
   api.use('tinytest');
-  api.use('temple');
+  api.use('babrahams:temple');
   api.addFiles('temple-tests.js');
 
 });
