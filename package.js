@@ -21,7 +21,7 @@ Package.onUse(function(api) {
   api.use('aldeed:template-extension@3.4.1','client');
   api.use('gwendall:body-events@0.1.4', 'client');
   api.use('mizzao:jquery-ui@1.11.2','client');
-  api.use('msavin:mongol', 'client', {weak: true}),
+  api.use('msavin:mongol@0.5.4', 'client', {weak: true}),
   
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');
