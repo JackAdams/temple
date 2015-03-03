@@ -19,6 +19,8 @@ Package.onUse(function(api) {
   api.use('reactive-dict', 'client');
   
   api.use('aldeed:template-extension@3.4.1','client');
+  api.use('gwendall:body-events@0.1.4', 'client');
+  api.use('mizzao:jquery-ui@1.11.2','client');
   api.use('msavin:mongol', 'client', {weak: true}),
   
   api.addFiles('temple.css','client');

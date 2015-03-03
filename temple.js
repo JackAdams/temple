@@ -29,9 +29,27 @@ Template.onRendered(function () {
     }
     
     Temple.instanceCount.set('Temple_render_count_' + template, currentCount + 1);
-    
+
   }
   
+});
+
+Template.body.events({
+
+  'click' : function (evt) {
+    
+    if (Session.get('Temple_activated')) {
+      
+      var target = $(evt.target)[0];
+
+      if (target && !($(target).closest('#Mongol').length || $(target).closest('.ui-dialog').find('#temple-dialog').length)) {
+        $('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>').dialog({minWidth:600});
+      }
+    
+    }
+  
+  }
+
 });
 
 Meteor.startup(function () {
