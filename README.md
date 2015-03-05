@@ -15,7 +15,7 @@ Use [control] + [T] to activate *Temple*.
 Note:
 
 1. *Temple* will plug itself into the UI of `msavin:mongol` if that package is added to your project.
-2. This is a `{debug: true}` package, so it won't be compiled into production builds.
+2. This is a `{debugOnly: true}` package, so it won't be compiled into production builds.
 
 Usage
 ----
