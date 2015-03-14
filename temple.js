@@ -46,7 +46,7 @@ Template.body.events({
         $('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>');
         $('#temple-dialog').dialog({
           title:'Data context',
-          minWidth:600
+          minWidth:800
         });
       }
     
