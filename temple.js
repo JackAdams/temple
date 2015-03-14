@@ -59,7 +59,8 @@ Template.body.events({
 Meteor.startup(function () {
 
   $(document).keydown(function (e) {
-    if (e.keyCode == 84 && e.ctrlKey) {
+	var charCode = e.which || e.keyCode;
+    if (charChode == 84 && e.ctrlKey) {
       Session.set('Temple_activated', !Session.get('Temple_activated'));
     }
   });
