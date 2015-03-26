@@ -9,8 +9,8 @@ Template.onRendered(function () {
   // We're going to get the element that surrounds that template
   var node = $(self.firstNode).parent();
   
-  if (node.closest('#Mongol').length) {
-    return;  
+  if (node.closest('#Mongol').length || node.closest('#temple-dialog').length) {
+    return;
   }
   
   if (node && node.nodeType !== 3) { // get rid of text nodes
@@ -41,12 +41,32 @@ Template.body.events({
     if (Session.get('Temple_activated')) {
       
       var target = $(evt.target)[0];
-
+	  
       if (target && !($(target).closest('#Mongol').length || $(target).closest('.ui-dialog').find('#temple-dialog').length)) {
-        $('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>');
+        // Blaze.renderWithData(Template.editableJSON, Blaze.getData(target), $('#temple-dialog')[0]);
+		$('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>');
         $('#temple-dialog').dialog({
           title:'Data context',
-          minWidth:800
+          minWidth:800,
+		  /*buttons:[
+		    {
+			  text:"Apply",
+			  click: function() {
+				var context = EditableJSON.retrieve();
+				// We now re-render the template with the new data context
+				var parent = $(evt.target).parent();
+				var view = Blaze.getView(target);
+				while (view.name.substr(0,9) !== 'Template.' && view.name !== 'body') {console.log("View:", view);
+				  view = view.parentView;	
+				}
+				var templateName = (view.name === 'body') ? 'body' : view.name.substr(9);
+				var tmpl = Template[templateName];
+				console.log("View:", view); console.log("Template:", tmpl);
+				parent.html(Blaze.toHTMLWithData(tmpl, context, parent[0]));
+				$('#temple-dialog').dialog('close');  
+			  }
+			}
+		  ]*/
         });
       }
     

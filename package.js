@@ -21,6 +21,7 @@ Package.onUse(function(api) {
   api.use('aldeed:template-extension@3.4.1','client');
   api.use('gwendall:body-events@0.1.4', 'client');
   api.use('mizzao:jquery-ui@1.11.2','client');
+  // api.use('babrahams:editable-json@0.3.12');
   api.use('msavin:mongol@1.0.2', 'client', {weak: true}),
   
   api.addFiles('temple.css','client');

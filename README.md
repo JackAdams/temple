@@ -1,3 +1,6 @@
+_Work on this has been discontinued in favour of the more mature [gwendall:template-inspector](https://github.com/gwendall/meteor-template-inspector)_
+--
+
 Developer tool that provides visual information about Meteor templates
 ----
 
