@@ -23,7 +23,7 @@ Package.onUse(function(api) {
   api.use('anti:modals@0.4.0','client');
   api.use('mizzao:jquery-ui@1.11.2','client');
   // api.use('babrahams:editable-json@0.3.12');
-  api.use('msavin:mongol', 'client', {weak: true}),
+  api.use('msavin:mongol@1.0.12', 'client', {weak: true}),
   
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');
