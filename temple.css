@@ -45,4 +45,6 @@ body.temple-activated:hover:after, .temple-activated .is-template:hover:after {
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  background-color: rgba(0,0,0,0.7) !important;
+  color: rgba(255,255,255,0.6);	
 }

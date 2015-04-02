@@ -1,5 +1,7 @@
 var Temple = {};
 
+Session.setDefault('Temple_current_context', null);
+
 Temple.instanceCount = new ReactiveDict();
 
 Template.onRendered(function () {
@@ -36,38 +38,43 @@ Template.onRendered(function () {
 
 Template.body.events({
 
-  'click' : function (evt) {
+  'click, mouseover' : function (evt) {
     
     if (Session.get('Temple_activated')) {
       
       var target = $(evt.target)[0];
 	  
       if (target && !($(target).closest('#Mongol').length || $(target).closest('.ui-dialog').find('#temple-dialog').length)) {
-        // Blaze.renderWithData(Template.editableJSON, Blaze.getData(target), $('#temple-dialog')[0]);
-		$('#temple-dialog').html('<pre>' + JSON.stringify(Blaze.getData(target), null, 2) + '</pre>');
-        $('#temple-dialog').dialog({
-          title:'Data context',
-          minWidth:800,
-		  /*buttons:[
-		    {
-			  text:"Apply",
-			  click: function() {
-				var context = EditableJSON.retrieve();
-				// We now re-render the template with the new data context
-				var parent = $(evt.target).parent();
-				var view = Blaze.getView(target);
-				while (view.name.substr(0,9) !== 'Template.' && view.name !== 'body') {console.log("View:", view);
-				  view = view.parentView;	
+		Session.set('Temple_current_context', Blaze.getData(target));
+		if (evt.type === 'click') {
+		  // Blaze.renderWithData(Template.editableJSON, Blaze.getData(target), $('#temple-dialog')[0]);
+		  var json = JSON.stringify(Blaze.getData(target), null, 2)
+		  json = !!Package['msavin:mongol'] && Package['msavin:mongol'].MongolPackage.colorize(json) || json;
+		  $('#temple-dialog').html('<pre>' + json + '</pre>');
+		  $('#temple-dialog').dialog({
+			title:'Data context',
+			minWidth:800,
+			/*buttons:[
+			  {
+				text:"Apply",
+				click: function() {
+				  var context = EditableJSON.retrieve();
+				  // We now re-render the template with the new data context
+				  var parent = $(evt.target).parent();
+				  var view = Blaze.getView(target);
+				  while (view.name.substr(0,9) !== 'Template.' && view.name !== 'body') {console.log("View:", view);
+					view = view.parentView;	
+				  }
+				  var templateName = (view.name === 'body') ? 'body' : view.name.substr(9);
+				  var tmpl = Template[templateName];
+				  console.log("View:", view); console.log("Template:", tmpl);
+				  parent.html(Blaze.toHTMLWithData(tmpl, context, parent[0]));
+				  $('#temple-dialog').dialog('close');  
 				}
-				var templateName = (view.name === 'body') ? 'body' : view.name.substr(9);
-				var tmpl = Template[templateName];
-				console.log("View:", view); console.log("Template:", tmpl);
-				parent.html(Blaze.toHTMLWithData(tmpl, context, parent[0]));
-				$('#temple-dialog').dialog('close');  
 			  }
-			}
-		  ]*/
-        });
+			]*/
+		  });
+		}
       }
     
     }
@@ -98,6 +105,13 @@ Meteor.startup(function () {
 
 });
 
+Template.Temple_JSON.helpers({
+  templeJSON : function () {
+	var json = JSON.stringify(Session.get('Temple_current_context'), null, 2);
+	return !!Package['msavin:mongol'] && Package['msavin:mongol'].MongolPackage.colorize(json) || json;
+  }
+});
+
 if (!!Package["msavin:mongol"]) {
     
   // Replace default Mongol header
@@ -107,7 +121,7 @@ if (!!Package["msavin:mongol"]) {
 
     templeActivated : function () {
       return (Session.get('Temple_activated')) ? 'Temple_activated' : '';    
-    }
+    }	
  
   });
   

@@ -1,6 +1,6 @@
 Package.describe({
   name: 'babrahams:temple',
-  version: '0.0.6',
+  version: '0.0.7',
   // Brief, one-line summary of the package.
   summary: 'Developer tool that provides visual information about templates',
   // URL to the Git repository containing the source code for this package.
@@ -15,14 +15,15 @@ Package.onUse(function(api) {
 
   api.versionsFrom('1.0');
   
-  api.use('templating', 'client');
+  api.use(['templating','session','blaze'], 'client');
   api.use('reactive-dict', 'client');
   
   api.use('aldeed:template-extension@3.4.1','client');
   api.use('gwendall:body-events@0.1.4', 'client');
+  api.use('anti:modals@0.4.0','client');
   api.use('mizzao:jquery-ui@1.11.2','client');
   // api.use('babrahams:editable-json@0.3.12');
-  api.use('msavin:mongol@1.0.2', 'client', {weak: true}),
+  api.use('msavin:mongol', 'client', {weak: true}),
   
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');
