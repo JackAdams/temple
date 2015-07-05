@@ -1,6 +1,3 @@
-_Work on this has been discontinued in favour of the more mature [gwendall:template-inspector](https://github.com/gwendall/meteor-template-inspector)_
---
-
 Developer tool that provides visual information about Meteor templates
 ----
 
@@ -17,7 +14,7 @@ Use [control] + [T] to activate *Temple*.
 
 Note:
 
-1. *Temple* will plug itself into the UI of `msavin:mongol` if that package is added to your project.
+1. *Temple* will plug itself into the UI of [babrahams:constellation](https://github.com/JackAdams/constellation) (fork of `msavin:mongol` that allows plugins) if that package is added to your project.
 2. This is a `{debugOnly: true}` package, so it won't be compiled into production builds.
 
 Usage
@@ -27,4 +24,4 @@ When *Temple* is activated, templates are outlined with red borders.
 
 When hovered over, the name of the template shows, along with a number that shows which rendered instance of the template this represents (since the last hard browser refresh).
 
-Click on any element to see the data context of the element as pretty JSON.
+Click on any element to see the data context of the element.

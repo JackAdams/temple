@@ -1,39 +1,22 @@
-<template name="Mongol_temple_header">
+<template name="Constellation_temple_header">
 
-  <div class="Mongol_row {{active}} Mongol_header" id="Mongol_cmongol_618">
-
-    <div style="float: right" class="Mongol_Minimize" title="Minimize">_</div>
-    <div style="float: right" class="Mongol_FullScreen" title="Fullscreen">&#x2b1c;</div>
-    <div style="float: right" class="Temple_activate Mongol_button {{templeActivated}}" title="Temple">Temple</div>
-
-    <div class="Mongol_button" title="Mongol">Mongol</div>
-    
-    <div class="Mongol_contentView">
-    
-      <div class="Mongol_docMenu" style="text-indent: 8px">
-        Data context
-      </div>
-
-      <div class="Mongol_documentViewer">
-        {{> Temple_JSON}}
-      </div>
-      
-    </div>
-
+  <div class="constellation-menu-button-container">
+    <span class="Temple_activate constellation-menu-button {{#if templeActivated}}constellation-menu-button-active{{/if}}" title="Activate Temple">On/Off</span>
   </div>
 
 </template>
 
-<body>
-  <div id="temple-dialog"></div>
-</body>
+<template name="Constellation_temple_menu">
+  
+  {{#if frozen}}<div class="constellation-menu-button-container" style="margin:7px;"><div class="Template_unfreeze constellation-menu-button">Unfreeze</div></div>{{/if}}
+  <div class="temple-template-info" title="{{#with frozen}}{{this}}{{/with}}">{{templateName}}</div>
 
-<template name="Temple_modal">
-  <div class="anti-modal-box">
-    <div class="anti-modal-body">
-      <pre>{{{templeJSON}}}</pre>
-    </div>
-  </div>
+</template>
+
+<template name="Constellation_temple_view">
+
+  {{> Temple_JSON}}
+
 </template>
 
 <template name="Temple_JSON">

@@ -1,6 +1,27 @@
+// First, plug in to Constellation UI if Constellation is available
+
+if (!!Package["babrahams:constellation"]) {
+  
+  var Constellation = Package["babrahams:constellation"];
+	
+  Constellation.API.addTab({
+	name: 'Temple',
+	id: 'temple',
+	mainContentTemplate: 'Constellation_temple_view',
+	headerContentTemplate: 'Constellation_temple_header',
+	menuContentTemplate: 'Constellation_temple_menu',
+	active: true
+  });
+  
+}
+
+// Now do all the stuff specific to this package
+
 var Temple = {};
 
-Session.setDefault('Temple_current_context', null);
+Temple.dict = new ReactiveDict('temple');
+
+Temple.dict.setDefault('Temple_current_context', null);
 
 Temple.instanceCount = new ReactiveDict();
 
@@ -11,7 +32,7 @@ Template.onRendered(function () {
   // We're going to get the element that surrounds that template
   var node = $(self.firstNode).parent();
   
-  if (node.closest('#Mongol').length || node.closest('#temple-dialog').length) {
+  if (node.closest('#Constellation').length) {
     return;
   }
   
@@ -19,7 +40,7 @@ Template.onRendered(function () {
     
     var template = self.view.name;
     var currentCount = Temple.instanceCount.get('Temple_render_count_' + template) || 1;
-    $node = node;
+    var $node = node;
 
     var fix = ($node.css('position') === 'fixed') ? true : false;
     
@@ -40,40 +61,35 @@ Template.body.events({
 
   'click, mouseover' : function (evt) {
     
-    if (Session.get('Temple_activated')) {
+    if (Temple.dict.get('Temple_activated')) {
       
-      var target = $(evt.target)[0];
-	  
-      if (target && !($(target).closest('#Mongol').length || $(target).closest('.ui-dialog').find('#temple-dialog').length)) {
-		Session.set('Temple_current_context', Blaze.getData(target));
+      var target = $(evt.target);
+
+      if (target.length && !$(target).closest('#Constellation').length) {
+		if (!Temple.dict.get('Temple_freeze_data') || evt.type === 'click') {
+		  Temple.dict.set('Temple_current_context', Blaze.getData(target[0]));
+		}
 		if (evt.type === 'click') {
 		  // Blaze.renderWithData(Template.editableJSON, Blaze.getData(target), $('#temple-dialog')[0]);
-		  var json = JSON.stringify(Blaze.getData(target), null, 2)
-		  json = !!Package['msavin:mongol'] && Package['msavin:mongol'].MongolPackage.colorize(json) || json;
-		  $('#temple-dialog').html('<pre>' + json + '</pre>');
-		  $('#temple-dialog').dialog({
-			title:'Data context',
-			minWidth:800,
-			/*buttons:[
-			  {
-				text:"Apply",
-				click: function() {
-				  var context = EditableJSON.retrieve();
-				  // We now re-render the template with the new data context
-				  var parent = $(evt.target).parent();
-				  var view = Blaze.getView(target);
-				  while (view.name.substr(0,9) !== 'Template.' && view.name !== 'body') {console.log("View:", view);
-					view = view.parentView;	
-				  }
-				  var templateName = (view.name === 'body') ? 'body' : view.name.substr(9);
-				  var tmpl = Template[templateName];
-				  console.log("View:", view); console.log("Template:", tmpl);
-				  parent.html(Blaze.toHTMLWithData(tmpl, context, parent[0]));
-				  $('#temple-dialog').dialog('close');  
-				}
+		  var json = JSON.stringify(Blaze.getData(target[0]), null, 2);
+		  if (!!Constellation && Constellation.API.isActive()) {
+		    // Freeze template viewer
+			var currentView = Blaze.getView(target[0]);
+			var getName = function (view, name) {
+			  var thisName = '';
+			  if (view && view.parentView && view.name.substr(0,9) !== 'Template.') {
+				// #each iterators use #with internally -- dev doesn't want to see those, just the block elements s/he put in the template
+				thisName = getName(view.parentView, (view.parentView.name === 'with' && view.parentView.parentView && view.parentView.parentView.name === 'each') ? '' : view.parentView.name);
 			  }
-			]*/
-		  });
+			  return (thisName) ? thisName + ((name) ? ' > ' + name : '') : name;
+			}
+			var viewName = getName(currentView, ((currentView) ? ((currentView.name === 'with' && currentView.parentView && currentView.parentView.name === 'each') ? '' : currentView.name) : 'body'));
+			Temple.dict.set('Temple_freeze_data', viewName);
+			Constellation.API.setCurrentTab('temple');
+		  }
+		  else {
+			alert(json); 
+		  }
 		}
       }
     
@@ -88,13 +104,13 @@ Meteor.startup(function () {
   $(document).keydown(function (e) {
 	var charCode = e.which || e.keyCode;
     if (charCode == 84 && e.ctrlKey) {
-      Session.set('Temple_activated', !Session.get('Temple_activated'));
+      Temple.dict.set('Temple_activated', !Temple.dict.get('Temple_activated'));
     }
   });
   
   Tracker.autorun(function () {
 
-    if (Session.get('Temple_activated')) {
+    if (Temple.dict.get('Temple_activated')) {
       $('body').addClass('temple-activated');
     }
     else {
@@ -105,37 +121,46 @@ Meteor.startup(function () {
 
 });
 
-Template.Temple_JSON.helpers({
-  templeJSON : function () {
-	var json = JSON.stringify(Session.get('Temple_current_context'), null, 2);
-	return !!Package['msavin:mongol'] && Package['msavin:mongol'].MongolPackage.colorize(json) || json;
+// Templates to use if Constellation is available
+
+Template.Constellation_temple_header.helpers({
+  templeActivated: function () {
+    return Temple.dict.get('Temple_activated');
   }
 });
 
-if (!!Package["msavin:mongol"]) {
-    
-  // Replace default Mongol header
-  Template.Mongol_temple_header.replaces("Mongol_header");
-  
-  Template.Mongol_header.helpers({
+Template.Constellation_temple_header.events({
+  'click .Temple_activate' : function (evt) {
+	evt.stopPropagation();
+    Temple.dict.set('Temple_activated', !Temple.dict.get('Temple_activated'));
+  }
+});
 
-    templeActivated : function () {
-      return (Session.get('Temple_activated')) ? 'Temple_activated' : '';    
-    }	
- 
-  });
-  
-  Template.Mongol_temple_header.inheritsHelpersFrom("Mongol_header");
-  
-  Template.Mongol_header.events({
+Template.Constellation_temple_menu.helpers({
+  frozen: function () {
+	return Temple.dict.get('Temple_freeze_data');  
+  },
+  templateName: function () {
+	var viewName = Temple.dict.get('Temple_freeze_data');
+	if (viewName) {
+	  if (viewName.length > 36) {
+		viewName = viewName.substr(0, 36) + ' ...';	
+	  }
+	  return viewName;
+	}
+	return 'Data context' + ((Temple.dict.get('Temple_activated')) ? ' (hover to view, click to freeze)' : '');
+  }
+});
 
-    'click .Temple_activate' : function (evt) {
-      evt.stopPropagation();
-      Session.set('Temple_activated', !Session.get('Temple_activated'));
-    }
+Template.Constellation_temple_menu.events({
+  'click .Template_unfreeze' : function () {
+	Temple.dict.set('Temple_freeze_data', null);  
+  }
+});
 
-  });
-  
-  Template.Mongol_temple_header.inheritsEventsFrom("Mongol_header");
-
-}
+Template.Temple_JSON.helpers({
+  templeJSON : function () {
+	var json = JSON.stringify(Temple.dict.get('Temple_current_context'), null, 2);
+	return !!Constellation && Constellation.Constellation.colorize(json) || json;
+  }
+});

@@ -21,24 +21,6 @@ body.temple-activated:hover:after, .temple-activated .is-template:hover:after {
   font-weight: normal;
 }
 
-.Mongol_button {
-  display: inline-block;
-  padding: 0 5px;
-  margin-left: -5px;
-  opacity: 1;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.Mongol_button:hover, .Temple_activated {
-  background: rgba(255, 255, 255, 0.15);
-  cursor: pointer;	
-}
-
-#Mongol .Temple_activated {
-  background: rgba(255, 255, 255, 0.25);
-}
-
 #temple-dialog pre {
   white-space: pre-wrap;       /* CSS 3 */
   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -47,4 +29,11 @@ body.temple-activated:hover:after, .temple-activated .is-template:hover:after {
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
   background-color: rgba(0,0,0,0.7) !important;
   color: rgba(255,255,255,0.6);	
+}
+
+.temple-template-info {
+  text-indent: 8px;
+  font-size: xx-small;
+  vertical-align: middle;
+  white-space: normal;
 }
