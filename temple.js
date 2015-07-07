@@ -2,9 +2,9 @@
 
 if (!!Package["babrahams:constellation"]) {
   
-  var Constellation = Package["babrahams:constellation"];
+  var Constellation = Package["babrahams:constellation"].API;
 	
-  Constellation.API.addTab({
+  Constellation.addTab({
 	name: 'Temple',
 	id: 'temple',
 	mainContentTemplate: 'Constellation_temple_view',
@@ -82,16 +82,16 @@ Template.body.events({
       if (target.length && !$(target).closest('#Constellation').length) {
 		if (!Temple.dict.get('Temple_freeze_data') || evt.type === 'click') {
 		  Temple.dict.set('Temple_current_context', Blaze.getData(target[0]));
-		  if (!!Constellation && Constellation.API.isActive()) {
+		  if (!!Constellation && Constellation.isActive()) {
 			// Change the breadcrumbs
 			Temple.makeBreadcrumbs(target);
 		  }
 		}
 		if (evt.type === 'click') {
-		  if (!!Constellation && Constellation.API.isActive()) {
+		  if (!!Constellation && Constellation.isActive()) {
 		    // Freeze template viewer
 			Temple.dict.set('Temple_freeze_data', true);
-			Constellation.API.setCurrentTab('temple');
+			Constellation.setCurrentTab('temple');
 		  }
 		  else {
 			Temple.makeBreadcrumbs(target);
@@ -173,6 +173,6 @@ Template.Constellation_temple_menu.events({
 Template.Temple_JSON.helpers({
   templeJSON : function () {
 	var json = JSON.stringify(Temple.dict.get('Temple_current_context'), null, 2);
-	return !!Constellation && Constellation.Constellation.colorize(json) || json;
+	return !!Constellation && Package["babrahams:constellation"].Constellation.colorize(json) || json;
   }
 });
