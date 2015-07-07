@@ -9,7 +9,7 @@
 <template name="Constellation_temple_menu">
   
   {{#if frozen}}<div class="constellation-menu-button-container" style="margin:7px;"><div class="Template_unfreeze constellation-menu-button">Unfreeze</div></div>{{/if}}
-  <div class="temple-template-info" title="{{#with frozen}}{{this}}{{/with}}">{{templateName}}</div>
+  <div class="temple-template-info" title="{{dataContext}}">{{templateName}}</div>
 
 </template>
 

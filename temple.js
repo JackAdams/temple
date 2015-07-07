@@ -57,6 +57,20 @@ Template.onRendered(function () {
   
 });
 
+Temple.makeBreadcrumbs = function (target) {
+  var currentView = Blaze.getView(target[0]);
+  var getName = function (view, name) {
+	var thisName = '';
+	if (view && view.parentView && view.name.substr(0,9) !== 'Template.') {
+	  // #each iterators use #with internally -- dev doesn't want to see those, just the block elements s/he put in the template
+	  thisName = getName(view.parentView, (view.parentView.name === 'with' && view.parentView.parentView && view.parentView.parentView.name === 'each') ? '' : view.parentView.name);
+	}
+	return (thisName) ? thisName + ((name) ? ' > ' + name : '') : name;
+  }
+  var viewName = getName(currentView, ((currentView) ? ((currentView.name === 'with' && currentView.parentView && currentView.parentView.name === 'each') ? '' : currentView.name) : 'body'));
+  Temple.dict.set('Temple_data_context', viewName);
+}
+
 Template.body.events({
 
   'click, mouseover' : function (evt) {
@@ -68,27 +82,21 @@ Template.body.events({
       if (target.length && !$(target).closest('#Constellation').length) {
 		if (!Temple.dict.get('Temple_freeze_data') || evt.type === 'click') {
 		  Temple.dict.set('Temple_current_context', Blaze.getData(target[0]));
+		  if (!!Constellation && Constellation.API.isActive()) {
+			// Change the breadcrumbs
+			Temple.makeBreadcrumbs(target);
+		  }
 		}
 		if (evt.type === 'click') {
-		  // Blaze.renderWithData(Template.editableJSON, Blaze.getData(target), $('#temple-dialog')[0]);
-		  var json = JSON.stringify(Blaze.getData(target[0]), null, 2);
 		  if (!!Constellation && Constellation.API.isActive()) {
 		    // Freeze template viewer
-			var currentView = Blaze.getView(target[0]);
-			var getName = function (view, name) {
-			  var thisName = '';
-			  if (view && view.parentView && view.name.substr(0,9) !== 'Template.') {
-				// #each iterators use #with internally -- dev doesn't want to see those, just the block elements s/he put in the template
-				thisName = getName(view.parentView, (view.parentView.name === 'with' && view.parentView.parentView && view.parentView.parentView.name === 'each') ? '' : view.parentView.name);
-			  }
-			  return (thisName) ? thisName + ((name) ? ' > ' + name : '') : name;
-			}
-			var viewName = getName(currentView, ((currentView) ? ((currentView.name === 'with' && currentView.parentView && currentView.parentView.name === 'each') ? '' : currentView.name) : 'body'));
-			Temple.dict.set('Temple_freeze_data', viewName);
+			Temple.dict.set('Temple_freeze_data', true);
 			Constellation.API.setCurrentTab('temple');
 		  }
 		  else {
-			alert(json); 
+			Temple.makeBreadcrumbs(target);
+		    var json = JSON.stringify(Blaze.getData(target[0]), null, 2);
+			alert(Temple.dict.get('Temple_data_context') + '\n\n' + json); 
 		  }
 		}
       }
@@ -140,11 +148,15 @@ Template.Constellation_temple_menu.helpers({
   frozen: function () {
 	return Temple.dict.get('Temple_freeze_data');  
   },
+  dataContext: function () {
+	return Temple.dict.get('Temple_data_context');
+  },
   templateName: function () {
-	var viewName = Temple.dict.get('Temple_freeze_data');
+	var viewName = Temple.dict.get('Temple_data_context');
 	if (viewName) {
-	  if (viewName.length > 36) {
-		viewName = viewName.substr(0, 36) + ' ...';	
+	  var maxLength = (Temple.dict.get('Temple_freeze_data')) ? 36 : 46;
+	  if (viewName.length > maxLength) {
+		viewName = viewName.substr(0, maxLength) + ' ...';	
 	  }
 	  return viewName;
 	}
@@ -154,7 +166,7 @@ Template.Constellation_temple_menu.helpers({
 
 Template.Constellation_temple_menu.events({
   'click .Template_unfreeze' : function () {
-	Temple.dict.set('Temple_freeze_data', null);  
+	Temple.dict.set('Temple_freeze_data', false);  
   }
 });
 
