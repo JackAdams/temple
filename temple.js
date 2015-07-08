@@ -88,10 +88,10 @@ Template.body.events({
           }
         }
         if (evt.type === 'click') {
-          if (!!Constellation && Constellation.isActive()) {
+          if (!!Constellation && Constellation.isActive() && Constellation.tabVisible('temple','plugin')) {
             // Freeze template viewer
             Temple.dict.set('Temple_freeze_data', true);
-            Constellation.setCurrentTab('temple');
+            Constellation.setCurrentTab('temple','plugin');
           }
           else {
             Temple.makeBreadcrumbs(target);
