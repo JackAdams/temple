@@ -19,7 +19,7 @@ Package.onUse(function(api) {
   api.use('reactive-dict', 'client');
   
   api.use('gwendall:body-events@0.1.6', 'client');
-  api.use('babrahams:constellation@1.0.0', {weak: true}),
+  api.use('constellation:console@1.0.0', {weak: true}),
   
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');

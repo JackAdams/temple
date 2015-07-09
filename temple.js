@@ -1,8 +1,8 @@
 // First, plug in to Constellation UI if Constellation is available
 
-if (!!Package["babrahams:constellation"]) {
+if (!!Package["constellation:console"]) {
   
-  var Constellation = Package["babrahams:constellation"].API;
+  var Constellation = Package["constellation:console"].API;
     
   Constellation.addTab({
     name: 'Temple',
@@ -173,6 +173,6 @@ Template.Constellation_temple_menu.events({
 Template.Temple_JSON.helpers({
   templeJSON : function () {
     var json = JSON.stringify(Temple.dict.get('Temple_current_context'), null, 2);
-    return !!Constellation && Package["babrahams:constellation"].Constellation.colorize(json) || json;
+    return !!Constellation && Package["constellation:console"].Constellation.colorize(json) || json;
   }
 });
