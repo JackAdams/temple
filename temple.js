@@ -75,14 +75,14 @@ Template.body.events({
 
   'click, mouseover' : function (evt) {
     
-    if (Temple.dict.get('Temple_activated')) {
+    if (Temple.dict.get('Temple_activated') || (!!Constellation && Constellation.isActive() && Constellation.tabVisible('temple','plugin'))) {
       
       var target = $(evt.target);
 
       if (target.length && !$(target).closest('#Constellation').length) {
         if (!Temple.dict.get('Temple_freeze_data') || evt.type === 'click') {
           Temple.dict.set('Temple_current_context', Blaze.getData(target[0]));
-          if (!!Constellation && Constellation.isActive()) {
+          if (!!Constellation && Constellation.tabVisible('temple','plugin')) {
             // Change the breadcrumbs
             Temple.makeBreadcrumbs(target);
           }
@@ -91,7 +91,9 @@ Template.body.events({
           if (!!Constellation && Constellation.isActive() && Constellation.tabVisible('temple','plugin')) {
             // Freeze template viewer
             Temple.dict.set('Temple_freeze_data', true);
-            Constellation.setCurrentTab('temple','plugin');
+			if (Temple.dict.get('Temple_activated')) {
+              Constellation.setCurrentTab('temple','plugin');
+			}
           }
           else {
             Temple.makeBreadcrumbs(target);
