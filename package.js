@@ -1,6 +1,6 @@
 Package.describe({
   name: 'babrahams:temple',
-  version: '0.1.3',
+  version: '0.1.4',
   // Brief, one-line summary of the package.
   summary: 'Developer tool that provides visual information about templates',
   // URL to the Git repository containing the source code for this package.
@@ -19,7 +19,7 @@ Package.onUse(function(api) {
   api.use('reactive-dict', 'client');
   
   api.use('gwendall:body-events@0.1.6', 'client');
-  api.use('constellation:console@1.0.3', {weak: true}),
+  api.use('constellation:console@1.0.4', {weak: true}),
   
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');
