@@ -13,8 +13,6 @@ if (!!Package["constellation:console"]) {
     active: true
   });
   
-  Constellation.excludeSessionVariablesWithPrefix('Temple_');
-  
 }
 
 // Now do all the stuff specific to this package
