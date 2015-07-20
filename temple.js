@@ -90,7 +90,9 @@ Template.body.events({
         if (evt.type === 'click') {
           if (!!Constellation && Constellation.isActive() && Constellation.tabVisible('temple','plugin')) {
             // Freeze template viewer
-            Temple.dict.set('Temple_freeze_data', true);
+			if (Temple.dict.get('Temple_activated') || Constellation.isCurrentTab('temple','plugin')) {
+              Temple.dict.set('Temple_freeze_data', true);
+			}
 			if (Temple.dict.get('Temple_activated')) {
               Constellation.setCurrentTab('temple','plugin');
 			}

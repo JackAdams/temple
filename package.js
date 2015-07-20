@@ -1,6 +1,6 @@
 Package.describe({
   name: 'babrahams:temple',
-  version: '0.2.7',
+  version: '0.2.8',
   summary: 'Developer tool that provides visual information about templates',
   git: 'https://github.com/JackAdams/temple.git',
   documentation: 'README.md',
