@@ -1,6 +1,6 @@
 Package.describe({
   name: 'babrahams:temple',
-  version: '0.3.1',
+  version: '0.3.2',
   summary: 'Developer tool that provides visual information about templates',
   git: 'https://github.com/JackAdams/temple.git',
   documentation: 'README.md',
@@ -11,7 +11,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom('1.1');
   
-  api.use(['templating','session','blaze','jquery'], 'client');
+  api.use(['templating','session','blaze','jquery','underscore','check'], 'client');
   api.use('reactive-dict', 'client');
   
   api.use('gwendall:body-events@0.1.6', 'client');
@@ -20,6 +20,8 @@ Package.onUse(function(api) {
   api.addFiles('temple.css','client');
   api.addFiles('temple.html', 'client');
   api.addFiles('temple.js','client');
+  
+  api.export('Temple');
 
 });
 

@@ -17,13 +17,31 @@ if (!!Package["constellation:console"]) {
 
 // Now do all the stuff specific to this package
 
-var Temple = {};
+Temple = {};
 
 Temple.dict = new ReactiveDict('temple');
 
 Temple.dict.setDefault('Temple_current_context', null);
 
 Temple.instanceCount = new ReactiveDict();
+
+Temple.excludedElements = [];
+
+Temple.exclude = function (selector) {
+  check(selector, Match.OneOf([String], String));
+  if (_.isArray(selector)) {
+	Temple.excludedElements.concat(selector);  
+  }
+  else {
+	Temple.excludedElements.push(selector);  
+  }
+}
+
+var excludedElement = function (elem) {
+  return _.find(Temple.excludedElements, function (selector) {
+	 return !!elem.is(selector); 
+  });
+}
 
 Template.onRendered(function () {
   
@@ -32,11 +50,11 @@ Template.onRendered(function () {
   // We're going to get the element that surrounds that template
   var node = $(self.firstNode).parent();
   
-  if (node.closest('#Constellation').length) {
+  if (node.closest('#Constellation').length || excludedElement(node)) {
     return;
   }
   
-  if (node && node.nodeType !== 3) { // get rid of text nodes
+  if (node[0] && node[0].nodeType !== 3) { // get rid of text nodes
     
     var template = self.view.name;
     var currentCount = Temple.instanceCount.get('Temple_render_count_' + template) || 1;
