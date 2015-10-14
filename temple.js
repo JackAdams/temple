@@ -187,7 +187,7 @@ Template.Constellation_temple_menu.helpers({
 });
 
 Template.Constellation_temple_menu.events({
-  'click .Template_unfreeze' : function () {
+  'click .Temple_unfreeze' : function () {
     Temple.dict.set('Temple_freeze_data', false);  
   }
 });

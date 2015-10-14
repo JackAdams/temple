@@ -37,3 +37,8 @@ body.temple-activated:hover:after, .temple-activated .is-template:hover:after {
   vertical-align: middle;
   white-space: normal;
 }
+
+#Constellation .Temple_unfreeze {
+  background-color: rgba(255,0,0,0.8);
+  color: #fff;	
+}
