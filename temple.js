@@ -10,6 +10,7 @@ if (!!Package["constellation:console"]) {
     mainContentTemplate: 'Constellation_temple_view',
     headerContentTemplate: 'Constellation_temple_header',
     menuContentTemplate: 'Constellation_temple_menu',
+	guideContentTemplate: 'Constellation_temple_guide',
     active: true
   });
   
@@ -198,3 +199,5 @@ Template.Temple_JSON.helpers({
     return !!Constellation && Package["constellation:console"].Constellation.colorize(json) || json;
   }
 });
+
+Template.Temple_JSON.events(Package["constellation:console"].Constellation.foreignKeyLinkEvents);
