@@ -11,7 +11,7 @@ Package.onUse(function(api) {
 
   api.versionsFrom('1.0');
   
-  api.use(['templating','session','blaze','jquery','underscore','check'], 'client');
+  api.use(['templating','session','blaze','jquery','underscore','check','tracker'], 'client');
   api.use('reactive-dict', 'client');
   api.use('gwendall:body-events@0.1.6');
 
