@@ -8,9 +8,9 @@ if (!!Package["constellation:console"]) {
     name: 'Temple',
     id: 'temple',
     mainContentTemplate: 'Constellation_temple_view',
-    headerContentTemplate: 'Constellation_temple_header',
+    // headerContentTemplate: 'Constellation_temple_header',
     menuContentTemplate: 'Constellation_temple_menu',
-	guideContentTemplate: 'Constellation_temple_guide',
+    guideContentTemplate: 'Constellation_temple_guide',
     active: true
   });
   
@@ -24,27 +24,27 @@ Temple.dict = new ReactiveDict('temple');
 
 Temple.dict.setDefault('Temple_current_context', null);
 
-Temple.instanceCount = new ReactiveDict();
+// Temple.instanceCount = new ReactiveDict();
 
 Temple.excludedElements = [];
 
 Temple.exclude = function (selector) {
   check(selector, Match.OneOf([String], String));
   if (_.isArray(selector)) {
-	Temple.excludedElements.concat(selector);  
+    Temple.excludedElements.concat(selector);  
   }
   else {
-	Temple.excludedElements.push(selector);  
+    Temple.excludedElements.push(selector);  
   }
 }
 
 var excludedElement = function (elem) {
   return _.find(Temple.excludedElements, function (selector) {
-	 return !!elem.is(selector); 
+     return !!elem.is(selector); 
   });
 }
 
-Template.onRendered(function () {
+/*Template.onRendered(function () {
   
   var self = this;
   
@@ -74,7 +74,7 @@ Template.onRendered(function () {
 
   }
   
-});
+});*/
 
 Temple.makeBreadcrumbs = function (target) {
   var currentView = Blaze.getView(target[0]);
@@ -109,12 +109,12 @@ Template.body.events({
         if (evt.type === 'click') {
           if (!!Constellation && Constellation.isActive() && Constellation.tabVisible('temple','plugin')) {
             // Freeze template viewer
-			if (Temple.dict.get('Temple_activated') || Constellation.isCurrentTab('temple','plugin')) {
+            if (Temple.dict.get('Temple_activated') || Constellation.isCurrentTab('temple','plugin')) {
               Temple.dict.set('Temple_freeze_data', true);
-			}
-			if (Temple.dict.get('Temple_activated')) {
+            }
+            if (Temple.dict.get('Temple_activated')) {
               Constellation.setCurrentTab('temple','plugin');
-			}
+            }
           }
           else {
             Temple.makeBreadcrumbs(target);
@@ -154,7 +154,7 @@ Meteor.startup(function () {
 
 // Templates to use if Constellation is available
 
-Template.Constellation_temple_header.helpers({
+/*Template.Constellation_temple_header.helpers({
   templeActivated: function () {
     return Temple.dict.get('Temple_activated');
   }
@@ -165,7 +165,7 @@ Template.Constellation_temple_header.events({
     evt.stopPropagation();
     Temple.dict.set('Temple_activated', !Temple.dict.get('Temple_activated'));
   }
-});
+});*/
 
 Template.Constellation_temple_menu.helpers({
   frozen: function () {
